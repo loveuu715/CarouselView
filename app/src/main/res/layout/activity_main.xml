@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mevv.carouselview.MainActivity">
+
+    <com.mevv.library.CarouselView
+        android:id="@+id/carouselView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:auto_carousel_timeMS="3000"
+        app:bottom_bar_height="35dp"
+        app:bottom_bar_margin_bottom="5dp"
+        app:indicator_margin_right="10dp"
+        app:indicator_space="5dp"
+        app:pic_desc_margin_left="10dp"
+        app:pic_desc_text_color="@color/colorAccent"
+        app:pic_desc_text_size="16sp"/>
+</RelativeLayout>

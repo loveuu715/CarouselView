@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="carousel_indicator_select_color">#00CCFF</color>
+    <color name="carousel_indicator_normal_color">#A0A0A0</color>
+    <color name="carousel_pic_text_color">#F2F7FA</color>
+</resources>
