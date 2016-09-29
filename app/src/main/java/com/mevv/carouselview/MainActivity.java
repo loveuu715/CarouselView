@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         mCarouselView.setOnCarouselClickListener(new CarouselView.OnCarouselClickListener() {
             @Override
             public void onCarouselClick(CarouselView.BannerInfo bannerInfo, int position) {
-                Toast.makeText(MainActivity.this, "点击了--->" + bannerInfo.imgUrl + "位置:" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "点击了--->" + bannerInfo.img + "位置:" + position, Toast.LENGTH_SHORT).show();
             }
         });
         initCarouselDatas(5);
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         beans = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             bannerInfo = new CarouselView.BannerInfo();
-            bannerInfo.imgUrl = imageUrls[i];
+            bannerInfo.img = imageUrls[i];
             bannerInfo.name = des[i];
             bannerInfo.url = imageUrls[i];
             beans.add(bannerInfo);

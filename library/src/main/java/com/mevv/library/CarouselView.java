@@ -96,7 +96,6 @@ public class CarouselView extends RelativeLayout {
     }
 
     private void initUI() {
-        //添加viewpager
         mCarouselViewPager = new ViewPager(mContext);
         LayoutParams vpLp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 , ViewGroup.LayoutParams.MATCH_PARENT);
@@ -106,7 +105,6 @@ public class CarouselView extends RelativeLayout {
                 , mBottomBarHeight);
         rlLp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 
-        //添加Bottombar
         mBottombarContainer = new RelativeLayout(mContext);
         mBottombarContainer.setBackgroundColor(mBottomBarBGColor);
         rlLp.setMargins(0, 0, 0, mBottomBarMarginBottom);
@@ -130,13 +128,11 @@ public class CarouselView extends RelativeLayout {
         indicatorLp.setMargins(0, 0, mIndicatorMarginRight, 0);
 
 
-        //添加indicator容器
         mIndicatorContainer = new LinearLayout(mContext);
         mIndicatorContainer.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
         mBottombarContainer.addView(mIndicatorContainer, indicatorLp);
 
 
-        //图片描述
         mPicDescTextView = new TextView(mContext);
         mPicDescTextView.setTextSize(mPicDescTextSize);
         mPicDescTextView.setTextColor(mPicDescTextColor);
@@ -154,23 +150,17 @@ public class CarouselView extends RelativeLayout {
         if (mInfoList == null || mInfoList.size() == 0)
             return;
 
-        //初始化轮播任务
         initCarouselTask();
-        //初始化ViewPager
         initViewpager();
-        //初始化指示器
         initIndicator();
-        //初始化轮播图的显示
         setCarouselDesAndIndicator(0);
-        //跳转到第一个
         mCarouselViewPager.setCurrentItem(0, true);
-        //开始轮播任务
         mCarouselTask.start();
     }
 
     private void initViewpager() {
-        mCurrentIndex = 0;//初始化index
-        mCarouselTask.stop();//停止任务
+        mCurrentIndex = 0 ;
+        mCarouselTask.stop();
         mCarouselAdapter = new CarouselAdapter();
         mCarouselViewPager.setAdapter(mCarouselAdapter);
         mCarouselAdapter.notifyDataSetChanged();
@@ -195,28 +185,21 @@ public class CarouselView extends RelativeLayout {
 
                 }
             };
-            //给轮播图添加页面切换事件
             mCarouselViewPager.addOnPageChangeListener(mCarouselPagerListener);
         }
 
     }
 
     private void initIndicator() {
-        //清空以前存在的点
         mIndicatorContainer.removeAllViews();
-        //轮播图有几张 加几个点
         for (int i = 0; i < mInfoList.size(); i++) {
             View v_point = new View(mContext);
-            //设置点的背景选择器
             v_point.setBackgroundResource(R.drawable.carousel_indicator_seletor);
-            v_point.setEnabled(false);//默认是默认的灰色点
+            v_point.setEnabled(false);
 
-            //设置点的大小
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(dp2px(10), dp2px(10));
-            //设置点与点直接的间距
             params.leftMargin = mIndicatorSpace;
 
-            //设置参数
             v_point.setLayoutParams(params);
             mIndicatorContainer.addView(v_point);
         }
@@ -227,7 +210,7 @@ public class CarouselView extends RelativeLayout {
     }
 
     private void initCarouselTask() {
-        if (mCarouselTask == null)//初始化自动轮播任务
+        if (mCarouselTask == null)
             mCarouselTask = new CarouselTask();
     }
 
@@ -235,9 +218,7 @@ public class CarouselView extends RelativeLayout {
     private void setCarouselDesAndIndicator(int position) {
         if (position < 0 || position > mInfoList.size() - 1)
             return;
-        //设置描述信息
         mPicDescTextView.setText(mInfoList.get(position).name);
-        //设置点是否是选中
         for (int i = 0; i < mInfoList.size(); i++) {
             mIndicatorContainer.getChildAt(i).setEnabled(i == position);
         }
@@ -247,20 +228,18 @@ public class CarouselView extends RelativeLayout {
     private class CarouselTask extends Handler implements Runnable {
 
         public void stop() {
-            //移除当前所有的任务
             removeCallbacksAndMessages(null);
         }
 
         public void start() {
             stop();
-            if (mInfoList.size() <= 1)//只有一张不启动自动轮播任务
+            if (mInfoList.size() <= 1)
                 return;
             postDelayed(this, mAutoTime);
         }
 
         @Override
         public void run() {
-            //控制轮播图的显示
             mCarouselViewPager.setCurrentItem((mCarouselViewPager.getCurrentItem() + 1)
                     % mCarouselViewPager.getAdapter().getCount(), true);
             postDelayed(this, mAutoTime);
@@ -275,15 +254,12 @@ public class CarouselView extends RelativeLayout {
             ImageView ivCarouselPic = new ImageView(mContext);
             ivCarouselPic.setScaleType(ImageView.ScaleType.FIT_XY);
 
-            //设备默认的图片,网络缓慢
 //            ivCarouselPic.setImageResource(R.drawable.home_scroll_default);
 
-            //异步加载图片，并且显示到组件中
             if (mPicInitListener != null)
-                mPicInitListener.onPicInit(ivCarouselPic, mInfoList.get(position).imgUrl, position);
-//            Glide.with(mContext).load(sBannerList.get(position).imgUrl).crossFade().into(ivCarouselPic);
+                mPicInitListener.onPicInit(ivCarouselPic, mInfoList.get(position).img, position);
+//            Glide.with(mContext).load(sBannerList.get(position).img).crossFade().into(ivCarouselPic);
 
-            //给图片添加触摸事件
             ivCarouselPic.setOnTouchListener(new OnTouchListener() {
 
                 private float downX;
@@ -293,28 +269,28 @@ public class CarouselView extends RelativeLayout {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     switch (event.getAction()) {
-                        case MotionEvent.ACTION_DOWN://按下停止轮播
+                        case MotionEvent.ACTION_DOWN:
                             downX = event.getX();
                             downY = event.getY();
                             downTime = System.currentTimeMillis();
                             mCarouselTask.stop();
                             break;
-                        case MotionEvent.ACTION_CANCEL://事件取消
+                        case MotionEvent.ACTION_CANCEL:
                             mCarouselTask.start();
                             break;
-                        case MotionEvent.ACTION_UP://松开
+                        case MotionEvent.ACTION_UP:
                             float upX = event.getX();
                             float upY = event.getY();
 
                             if (upX == downX && upY == downY) {
                                 long upTime = System.currentTimeMillis();
                                 if (upTime - downTime < 500) {
-                                    //点击
+
                                     if (mCarouselClickListener != null)
                                         mCarouselClickListener.onCarouselClick(mInfoList.get(position), position);
                                 }
                             }
-                            mCarouselTask.start();//开始轮播
+                            mCarouselTask.start();
                             break;
                         default:
                             break;
@@ -380,15 +356,15 @@ public class CarouselView extends RelativeLayout {
 
 
     public static class BannerInfo {
-        public String imgUrl;//图片地址
-        public String url;//跳转地址
-        public String name;//名称
+        public String img;
+        public String url;
+        public String name;
 
 
         @Override
         public String toString() {
             return "BannerListBean{" +
-                    "imgUrl='" + imgUrl + '\'' +
+                    "img='" + img + '\'' +
                     ", url='" + url + '\'' +
                     ", name='" + name + '\'' +
                     '}';
@@ -397,12 +373,6 @@ public class CarouselView extends RelativeLayout {
     }
 
 
-    /**
-     * dp转px
-     *
-     * @param dpVal
-     * @return
-     */
     private int dp2px(float dpVal) {
         final float scale = mContext.getResources().getDisplayMetrics().density;
         return (int) (dpVal * scale + 0.5f);
@@ -411,13 +381,6 @@ public class CarouselView extends RelativeLayout {
 //                dpVal, mContext.getResources().getDisplayMetrics());
     }
 
-
-    /**
-     * sp转px
-     *
-     * @param spVal
-     * @return
-     */
     private int sp2px(float spVal) {
 //        final float fontScale = mContext.getResources().getDisplayMetrics().scaledDensity;
 //        return (int) (spVal * fontScale + 0.5f);
