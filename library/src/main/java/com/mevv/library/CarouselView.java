@@ -93,6 +93,7 @@ public class CarouselView extends RelativeLayout {
             a.recycle();
         }
         initUI();
+        initCarouselTask();
     }
 
     private void initUI() {
@@ -149,8 +150,7 @@ public class CarouselView extends RelativeLayout {
         this.mInfoList = carouselData;
         if (mInfoList == null || mInfoList.size() == 0)
             return;
-
-        initCarouselTask();
+        mCarouselTask.removeCallbacksAndMessages(null);
         initViewpager();
         initIndicator();
         setCarouselDesAndIndicator(0);
@@ -163,8 +163,6 @@ public class CarouselView extends RelativeLayout {
         mCarouselTask.stop();
         mCarouselAdapter = new CarouselAdapter();
         mCarouselViewPager.setAdapter(mCarouselAdapter);
-        mCarouselAdapter.notifyDataSetChanged();
-
 
         if (mCarouselPagerListener == null) {
             mCarouselPagerListener = new ViewPager.OnPageChangeListener() {
@@ -203,10 +201,6 @@ public class CarouselView extends RelativeLayout {
             v_point.setLayoutParams(params);
             mIndicatorContainer.addView(v_point);
         }
-    }
-
-    private void initPicDescAndIndicator() {
-
     }
 
     private void initCarouselTask() {
