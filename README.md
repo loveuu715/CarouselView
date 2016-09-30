@@ -1,3 +1,4 @@
 # CarouselView
 
- compile 'com.mevv:carouselview:1.0.0'
+###fix bug
+ compile 'com.mevv:carouselview:1.0.1'
